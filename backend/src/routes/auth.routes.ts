@@ -9,7 +9,8 @@ import { users } from "../db/schema.js";
 import type { User } from "../config/types.js";
 import jwt from "jsonwebtoken";
 import { UserMiddleware } from "../middleware/user.middleware.js";
-import { JWT_USER_SECRET } from "../config/index.js";
+import { JWT_EXPIRATION_TIME, JWT_USER_SECRET } from "../config/index.js";
+import { successResponse } from "../utils/reponses.js";
 
 const authRouter = express.Router();
 
@@ -43,25 +44,32 @@ passport.use(
 
       // find the user in the database
       const existingUser = await db.query.users.findFirst({
-        where: eq(users.googleId, profile.id),
+        where: eq(users.email, profile.emails?.[0]?.value!),
       });
 
-      if (!existingUser) {
-        try {
-          await db.insert(users).values({
-            email: profile?.emails?.[0]?.value!,
-            firstName: profile?.name?.givenName!,
-            lastName: profile?.name?.familyName!,
+      if (existingUser) {
+        console.log("user found");
+        await db
+          .update(users)
+          .set({
             googleId: profile.id,
-          });
-        } catch (e) {
-          console.log(e);
-        }
-        console.log("new user created");
+          })
+          .where(eq(users.email, profile.emails?.[0]?.value!));
+
         return done(null, user);
       }
 
-      console.log("user found");
+      try {
+        await db.insert(users).values({
+          email: profile?.emails?.[0]?.value!,
+          firstName: profile?.name?.givenName!,
+          lastName: profile?.name?.familyName!,
+          googleId: profile.id,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+      console.log("new user created");
       return done(null, user);
     }
   )
@@ -96,7 +104,7 @@ authRouter.get(
         },
         JWT_USER_SECRET,
         {
-          expiresIn: "1h",
+          expiresIn: JWT_EXPIRATION_TIME,
         }
       );
 

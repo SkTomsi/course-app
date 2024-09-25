@@ -1,4 +1,4 @@
 const JWT_USER_SECRET = process.env.JWT_SECRET!;
-const JWT_ADMIN_SECRET = process.env.JWT_SECRET!;
+const JWT_EXPIRATION_TIME = "24h";
 
-export { JWT_USER_SECRET, JWT_ADMIN_SECRET };
+export { JWT_USER_SECRET, JWT_EXPIRATION_TIME };
