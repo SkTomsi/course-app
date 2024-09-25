@@ -1,10 +1,13 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  email: text("email").notNull(),
-  password: text("password").notNull(),
-  fistName: text("fistName").notNull(),
-  lastName: text("lastName").notNull(),
+  email: text("email"),
+  password: text("password"),
+  firstName: text("firstName"),
+  lastName: text("lastName"),
   createdAt: timestamp("createdAt").defaultNow(),
+  googleId: text("googleId"),
 });
+
+export type userSchema = typeof users.$inferInsert;
