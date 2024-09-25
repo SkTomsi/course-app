@@ -36,12 +36,6 @@ passport.use(
 
     // returns the authenticated email profile
     async function (request, accessToken, refreshToken, profile, done) {
-      const user: User = {
-        id: profile.id,
-        email: profile?.emails?.[0]?.value!,
-        googleId: profile.id,
-      };
-
       // find the user in the database
       const existingUser = await db.query.users.findFirst({
         where: eq(users.email, profile.emails?.[0]?.value!),
@@ -49,28 +43,49 @@ passport.use(
 
       if (existingUser) {
         console.log("user found");
-        await db
+        const oldUser = await db
           .update(users)
           .set({
             googleId: profile.id,
           })
-          .where(eq(users.email, profile.emails?.[0]?.value!));
+          .where(eq(users.email, profile.emails?.[0]?.value!))
+          .returning({
+            id: users.id,
+            email: users.email,
+            googleId: users.googleId,
+          });
 
-        return done(null, user);
+        return done(null, {
+          id: oldUser[0]?.id!,
+          email: oldUser[0]?.email!,
+          googleId: oldUser[0]?.googleId!,
+        });
       }
 
       try {
-        await db.insert(users).values({
-          email: profile?.emails?.[0]?.value!,
-          firstName: profile?.name?.givenName!,
-          lastName: profile?.name?.familyName!,
-          googleId: profile.id,
+        const newUser = await db
+          .insert(users)
+          .values({
+            email: profile?.emails?.[0]?.value!,
+            firstName: profile?.name?.givenName!,
+            lastName: profile?.name?.familyName!,
+            googleId: profile.id,
+          })
+          .returning({
+            id: users.id,
+            email: users.email,
+            googleId: users.googleId,
+          });
+        console.log("new user created");
+        return done(null, {
+          id: newUser[0]?.id!,
+          email: newUser[0]?.email!,
+          googleId: newUser[0]?.googleId!,
         });
       } catch (e) {
         console.log(e);
+        return done(null, false, { message: "something went wrong" });
       }
-      console.log("new user created");
-      return done(null, user);
     }
   )
 );

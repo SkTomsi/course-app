@@ -52,3 +52,29 @@ export const UserLoginSchema = z.object({
     .trim()
     .min(1, "Password cannot be empty"),
 });
+
+export const CreateCourseSchema = z.object({
+  title: z
+    .string({
+      required_error: "Title is required",
+    })
+    .trim()
+    .min(1, "Title cannot be empty"),
+  description: z
+    .string({
+      required_error: "Description is required",
+    })
+    .trim()
+    .min(1, "Description cannot be empty"),
+  price: z
+    .number({
+      required_error: "Price is required",
+    })
+    .min(1, "Price cannot be empty"),
+  imageUrl: z
+    .string({
+      required_error: "Image URL is required",
+    })
+    .trim()
+    .min(1, "Image URL cannot be empty"),
+});

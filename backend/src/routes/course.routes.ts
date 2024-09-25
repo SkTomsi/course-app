@@ -1,18 +1,9 @@
 import express from "express";
+import { UserMiddleware } from "../middleware/user.middleware.js";
+import { CreateCourseController } from "../controllers/course/create-course.controller.js";
 
 const courseRouter = express.Router();
 
-courseRouter.post("/purchase", function (req, res) {
-  // you would expect the user to pay you money
-  res.json({
-    message: "signup endpoint",
-  });
-});
-
-courseRouter.get("/preview", function (req, res) {
-  res.json({
-    message: "course preview endpoint",
-  });
-});
+courseRouter.post("/create", UserMiddleware, CreateCourseController);
 
 export default courseRouter;

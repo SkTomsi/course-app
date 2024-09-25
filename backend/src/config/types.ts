@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  id: number;
   email: string;
   googleId: string;
 }
@@ -7,7 +7,7 @@ export interface User {
 declare global {
   namespace Express {
     interface User {
-      id: string;
+      id: number;
       email: string;
       googleId: string;
     }
