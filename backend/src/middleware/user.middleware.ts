@@ -1,7 +1,8 @@
 import type { NextFunction, Response, Request } from "express";
 import jwt, { type JwtPayload } from "jsonwebtoken";
+import { JWT_USER_SECRET } from "../config/index.js";
 
-export function userMiddleware(
+export function UserMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
@@ -16,7 +17,7 @@ export function userMiddleware(
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    const decoded = jwt.verify(token, JWT_USER_SECRET) as JwtPayload;
 
     if (decoded.id) {
       req.user = decoded.id;

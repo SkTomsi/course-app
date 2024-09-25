@@ -1,10 +1,10 @@
 import express from "express";
-import userRouter from "./routes/auth.routes.js";
 import courseRouter from "./routes/course.routes.js";
 import authRouter from "./routes/auth.routes.js";
-import adminRouter from "./routes/admin.routes.js";
 import session from "express-session";
 import passport from "passport";
+import { errorHandler } from "./middleware/error-handler.js";
+import UserRouter from "./routes/user.routes.js";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET!, // session secret
+    secret: process.env.SESSION_SECRET!,
     resave: false,
     saveUninitialized: false,
   })
@@ -28,8 +28,9 @@ app.get("/health", (req, res) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/course", courseRouter);
-app.use("/api/v1/user", userRouter);
-app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/user", UserRouter);
+
+app.use(errorHandler);
 
 app
   .listen(PORT, () => {

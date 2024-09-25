@@ -1,19 +1,12 @@
 import express from "express";
+import { UserMiddleware } from "../middleware/user.middleware.js";
+import { CreateCourseController } from "../controllers/user/create-course.controller.js";
+import { CreateUserController } from "../controllers/user/sign-up.controller.js";
+import { ValidateUser } from "../schemas/validators.js";
 
-const userRouter = express.Router();
+const UserRouter = express.Router();
 
-userRouter.post("/signup", async function (req, res) {});
+UserRouter.post("/signup", ValidateUser, CreateUserController);
+UserRouter.post("/course", UserMiddleware, CreateCourseController);
 
-userRouter.post("/signin", function (req, res) {
-  res.json({
-    message: "signup endpoint",
-  });
-});
-
-userRouter.get("/purchases", function (req, res) {
-  res.json({
-    message: "purchases endpoint",
-  });
-});
-
-export default userRouter;
+export default UserRouter;

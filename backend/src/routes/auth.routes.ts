@@ -8,7 +8,8 @@ import { eq } from "drizzle-orm";
 import { users } from "../db/schema.js";
 import type { User } from "../config/types.js";
 import jwt from "jsonwebtoken";
-import { userMiddleware } from "../middleware/user-middleware.js";
+import { UserMiddleware } from "../middleware/user.middleware.js";
+import { JWT_USER_SECRET } from "../config/index.js";
 
 const authRouter = express.Router();
 
@@ -66,7 +67,7 @@ passport.use(
   )
 );
 
-authRouter.get("/", userMiddleware, function (req, res) {
+authRouter.get("/", UserMiddleware, function (req, res) {
   res.json({
     message: "You have reached a protected route",
   });
@@ -82,7 +83,6 @@ authRouter.get(
 authRouter.get(
   "/callback/google",
   passport.authenticate("google", {
-    // successRedirect: "http://localhost:3000/dashboard",
     failureRedirect: "/login",
   }),
   (req, res) => {
@@ -94,7 +94,7 @@ authRouter.get(
         {
           id: req.user?.id,
         },
-        process.env.JWT_SECRET!,
+        JWT_USER_SECRET,
         {
           expiresIn: "1h",
         }
