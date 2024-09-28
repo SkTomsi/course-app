@@ -1,19 +1,15 @@
 import type { Request, Response } from "express";
-import { CreateCourseSchema } from "../../schemas/index.js";
 import { db } from "../../db/index.js";
 import { courses } from "../../db/schema.js";
 import { errorResponse, successResponse } from "../../utils/reponses.js";
+import { nanoid } from "nanoid";
 
 export async function CreateCourseController(req: Request, res: Response) {
   const { title, description, price, imageUrl } = req.body;
 
-  const result = CreateCourseSchema.safeParse(req.body);
-
-  if (!result.success) {
-    return errorResponse(res, 400, "Invalid request body");
-  }
-
   try {
+    const courseId = nanoid();
+
     const course = await db
       .insert(courses)
       .values({
@@ -21,7 +17,8 @@ export async function CreateCourseController(req: Request, res: Response) {
         description,
         price,
         imageUrl,
-        creatorId: Number(req.user),
+        id: courseId,
+        creatorId: req.user?.id,
       })
       .returning({
         title: courses.title,

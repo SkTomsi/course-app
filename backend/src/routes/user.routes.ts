@@ -8,16 +8,12 @@ import {
 } from "../schemas/validators.js";
 import { SignInController } from "../controllers/user/sign-in.controller.js";
 import { CreateCourseController } from "../controllers/course/create-course.controller.js";
+import { GetUserCoursesController } from "../controllers/user/get-user-courses.controller.js";
 
 const UserRouter = express.Router();
 
 UserRouter.post("/signup", ValidateUser, CreateUserController);
 UserRouter.post("/signin", ValidateLogin, SignInController);
-UserRouter.post(
-  "/course",
-  UserMiddleware,
-  ValidateCourse,
-  CreateCourseController
-);
+UserRouter.get("/courses", UserMiddleware, GetUserCoursesController);
 
 export default UserRouter;

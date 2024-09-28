@@ -6,11 +6,11 @@ import "dotenv/config";
 import { db } from "../db/index.js";
 import { eq } from "drizzle-orm";
 import { users } from "../db/schema.js";
-import type { User } from "../config/types.js";
 import jwt from "jsonwebtoken";
 import { UserMiddleware } from "../middleware/user.middleware.js";
 import { JWT_EXPIRATION_TIME, JWT_USER_SECRET } from "../config/index.js";
-import { successResponse } from "../utils/reponses.js";
+import { nanoid } from "nanoid";
+import type { User } from "../config/types.js";
 
 const authRouter = express.Router();
 
@@ -47,6 +47,8 @@ passport.use(
           .update(users)
           .set({
             googleId: profile.id,
+            firstName: profile?.name?.givenName!,
+            lastName: profile?.name?.familyName!,
           })
           .where(eq(users.email, profile.emails?.[0]?.value!))
           .returning({
@@ -63,6 +65,7 @@ passport.use(
       }
 
       try {
+        const userId = nanoid();
         const newUser = await db
           .insert(users)
           .values({
@@ -70,6 +73,7 @@ passport.use(
             firstName: profile?.name?.givenName!,
             lastName: profile?.name?.familyName!,
             googleId: profile.id,
+            id: userId,
           })
           .returning({
             id: users.id,
@@ -109,9 +113,6 @@ authRouter.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
-    if (!req.user?.googleId) {
-      console.log("Google ID is missing");
-    }
     try {
       const token = jwt.sign(
         {

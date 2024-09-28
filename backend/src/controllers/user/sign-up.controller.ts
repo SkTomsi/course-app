@@ -4,6 +4,7 @@ import { db } from "../../db/index.js";
 import { users } from "../../db/schema.js";
 import { errorResponse, successResponse } from "../../utils/reponses.js";
 import bcrypt from "bcrypt";
+import { nanoid } from "nanoid";
 
 export async function CreateUserController(req: Request, res: Response) {
   const { email, password, firstName, lastName } = req.body;
@@ -34,6 +35,8 @@ export async function CreateUserController(req: Request, res: Response) {
       return successResponse(res, "User Updated Successfully");
     }
 
+    const userId = nanoid();
+
     const user = await db
       .insert(users)
       .values({
@@ -41,6 +44,7 @@ export async function CreateUserController(req: Request, res: Response) {
         firstName: firstName,
         lastName: lastName,
         password: hashedPwd,
+        id: userId,
       })
       .returning({
         id: users.id,

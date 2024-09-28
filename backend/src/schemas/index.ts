@@ -76,5 +76,36 @@ export const CreateCourseSchema = z.object({
       required_error: "Image URL is required",
     })
     .trim()
+    .url("Invalid URL")
     .min(1, "Image URL cannot be empty"),
+});
+export const UpdateCourseSchema = z.object({
+  title: z
+    .string({
+      required_error: "Title is required",
+    })
+    .trim()
+    .min(1, "Title cannot be empty")
+    .optional(),
+  description: z
+    .string({
+      required_error: "Description is required",
+    })
+    .trim()
+    .min(1, "Description cannot be empty")
+    .optional(),
+  price: z
+    .number({
+      required_error: "Price is required",
+    })
+    .min(1, "Price cannot be empty")
+    .optional(),
+  imageUrl: z
+    .string({
+      required_error: "Image URL is required",
+    })
+    .trim()
+    .url("Invalid URL")
+    .min(1, "Image URL cannot be empty")
+    .optional(),
 });

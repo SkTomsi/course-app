@@ -41,7 +41,6 @@ export async function SignInController(req: Request, res: Response) {
   if (!token) {
     return errorResponse(res, 500, "Something went wrong");
   }
-
   return successResponse(
     res,
     { auth_token: token },
