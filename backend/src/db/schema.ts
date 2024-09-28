@@ -29,3 +29,10 @@ export const courses = pgTable("courses", {
   createdAt: timestamp("createdAt").defaultNow(),
   creatorId: varchar("creatorId").references(() => users.id),
 });
+
+export const purchases = pgTable("purchases", {
+  purchaseId: varchar("purchaseId").notNull().primaryKey(),
+  courseId: varchar("courseId").references(() => courses.id),
+  userId: varchar("userId").references(() => users.id),
+  purchasedAt: timestamp("createdAt").defaultNow(),
+});
