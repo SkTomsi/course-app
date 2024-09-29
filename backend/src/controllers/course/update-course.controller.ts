@@ -11,8 +11,6 @@ export async function UpdateCourseController(
   const { title, description, price, imageUrl } = req.body;
   const { courseId } = req.params;
 
-  console.log(req.user?.id);
-
   try {
     const course = await db
       .update(courses)
@@ -29,8 +27,6 @@ export async function UpdateCourseController(
         courseId: courses.id,
         courseName: courses.title,
       });
-
-    console.log(course);
 
     if (!course || course.length === 0) {
       return errorResponse(

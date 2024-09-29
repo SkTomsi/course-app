@@ -1,13 +1,14 @@
 import type { Request, Response } from "express";
 import { errorResponse, successResponse } from "../../utils/reponses.js";
 import { db } from "../../db/index.js";
-import { purchases } from "../../db/schema.js";
+import { courses, purchases } from "../../db/schema.js";
 import { and, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
 export async function PurchaseCourseController(req: any, res: Response) {
   const { courseId } = req.params;
   const userId = req.user?.id;
+  const courseName = req.course?.title;
 
   if (userId === req.course?.creatorId) {
     return errorResponse(res, 400, "You can't purchase your own course");
@@ -31,10 +32,13 @@ export async function PurchaseCourseController(req: any, res: Response) {
 
     return successResponse(
       res,
-      purchasedCourse,
+      {
+        courseTitle: courseName,
+      },
       "Course purchased successfully"
     );
   } catch (error) {
-    return errorResponse(res, 500, "Something went wrong");
+    console.log(error);
+    return errorResponse(res, 500, "Something went wrong", error);
   }
 }

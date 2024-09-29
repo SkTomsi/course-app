@@ -6,20 +6,17 @@ import { UpdateCourseController } from "../controllers/course/update-course.cont
 import { GetCourseController } from "../controllers/course/get-course.controller.js";
 import { PurchaseCourseController } from "../controllers/course/purchase-course.controller.js";
 import { CheckCourseExists } from "../utils/index.js";
+import { GetAllCoursesController } from "../controllers/course/get-all-courses.controller.js";
 
 const courseRouter = express.Router();
+
+courseRouter.get("/", GetAllCoursesController);
 
 courseRouter.post(
   "/create",
   UserMiddleware,
   ValidateCourse,
   CreateCourseController
-);
-courseRouter.get(
-  "/:courseId/update",
-  UserMiddleware,
-  ValidateUpdateCourse,
-  UpdateCourseController
 );
 
 courseRouter.post(
@@ -29,6 +26,14 @@ courseRouter.post(
   PurchaseCourseController
 );
 
-courseRouter.get("/:courseId", GetCourseController);
+courseRouter.put(
+  "/:courseId/update",
+  UserMiddleware,
+  CheckCourseExists,
+  ValidateUpdateCourse,
+  UpdateCourseController
+);
+
+courseRouter.get("/:courseId", CheckCourseExists, GetCourseController);
 
 export default courseRouter;

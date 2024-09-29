@@ -51,7 +51,6 @@ export async function CreateUserController(req: Request, res: Response) {
         email: users.email,
       });
 
-    console.log(user);
     return successResponse(res, "User created successfully");
   } catch (error) {
     errorResponse(
