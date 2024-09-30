@@ -1,0 +1,5 @@
+{
+  "extends": ["expo", "prettier"],
+  "plugins": ["prettier", "@react-native", "prettier"],
+  "rules": {}
+}
