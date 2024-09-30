@@ -11,6 +11,9 @@ dependencies:
   '@react-navigation/native':
     specifier: ^6.0.2
     version: 6.1.18(react-native@0.74.5)(react@18.2.0)
+  clsx:
+    specifier: ^2.1.1
+    version: 2.1.1
   expo:
     specifier: ~51.0.28
     version: 51.0.34(@babel/core@7.25.2)(@babel/preset-env@7.25.4)
@@ -50,6 +53,9 @@ dependencies:
   react-native:
     specifier: 0.74.5
     version: 0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4)(@types/react@18.2.79)(react@18.2.0)
+  react-native-css-interop:
+    specifier: ^0.1.9
+    version: 0.1.9(react-native-reanimated@3.10.1)(react-native-safe-area-context@4.10.5)(react-native@0.74.5)(react@18.2.0)(tailwindcss@3.4.13)
   react-native-gesture-handler:
     specifier: ~2.16.1
     version: 2.16.2(react-native@0.74.5)(react@18.2.0)
@@ -65,6 +71,9 @@ dependencies:
   react-native-web:
     specifier: ~0.19.10
     version: 0.19.12(react-dom@18.2.0)(react@18.2.0)
+  tailwind-merge:
+    specifier: ^2.5.2
+    version: 2.5.2
   tailwindcss:
     specifier: ^3.4.13
     version: 3.4.13
@@ -4256,6 +4265,11 @@ packages:
   /clone@2.1.2:
     resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
     engines: {node: '>=0.8'}
+    dev: false
+
+  /clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
     dev: false
 
   /co@4.6.0:
@@ -9854,6 +9868,10 @@ packages:
       '@pkgr/core': 0.1.1
       tslib: 2.7.0
     dev: true
+
+  /tailwind-merge@2.5.2:
+    resolution: {integrity: sha512-kjEBm+pvD+6eAwzJL2Bi+02/9LFLal1Gs61+QB7HvTfQQ0aXwC5LGT8PEt1gS0CWKktKe6ysPTAy3cBC5MeiIg==}
+    dev: false
 
   /tailwindcss@3.4.13:
     resolution: {integrity: sha512-KqjHOJKogOUt5Bs752ykCeiwvi0fKVkr5oqsFNt/8px/tA8scFPIlkygsf6jXrfCqGHz7VflA6+yytWuM+XhFw==}

@@ -4,7 +4,20 @@ module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        giest: [
+          "Giest-Regular",
+          "Giest-Bold",
+          "Giest-Medium",
+          "Giest-SemiBold",
+          "Giest-ExtraBold",
+          "Giest-ExtraLight",
+          "Giest-Light",
+          "Giest-Thin",
+        ],
+      },
+    },
   },
   plugins: [],
 };
